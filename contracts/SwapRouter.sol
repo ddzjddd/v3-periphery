@@ -84,6 +84,8 @@ contract SwapRouter is
     }
 
     /// @dev Performs a single exact input swap
+    //exactInput模式指的是指定要卖出token的数量，计算最小得到要买入的token数量
+    //与上面相对，exactOutput模式指的是指定要买入的token的数量，计算最大要卖出的token数量
     function exactInputInternal(
         uint256 amountIn,
         address recipient,
@@ -94,7 +96,7 @@ contract SwapRouter is
         if (recipient == address(0)) recipient = address(this);
 
         (address tokenIn, address tokenOut, uint24 fee) = data.path.decodeFirstPool();
-
+        //确认卖出的token是x还是y，因为只存储x的价格，并且x对应的是token地址较小的token
         bool zeroForOne = tokenIn < tokenOut;
 
         (int256 amount0, int256 amount1) =
